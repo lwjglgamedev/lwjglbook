@@ -1,0 +1,12 @@
+.idea/
+.gradle/
+.settings/
+*.iml
+.classpath
+.factorypath
+.project
+target/
+build/
+*.log
+*.cap
+*.cmd

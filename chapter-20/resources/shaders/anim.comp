@@ -1,0 +1,95 @@
+#version 460
+
+layout (std430, binding=0) readonly buffer srcBuf {
+    float data[];
+} srcVector;
+
+layout (std430, binding=1) readonly buffer weightsBuf {
+    float data[];
+} weightsVector;
+
+layout (std430, binding=2) readonly buffer bonesBuf {
+    mat4 data[];
+} bonesMatrices;
+
+layout (std430, binding=3) buffer dstBuf {
+    float data[];
+} dstVector;
+
+struct DrawParameters
+{
+    int srcOffset;
+    int srcSize;
+    int weightsOffset;
+    int bonesMatricesOffset;
+    int dstOffset;
+};
+uniform DrawParameters drawParameters;
+
+layout (local_size_x=1, local_size_y=1, local_size_z=1) in;
+
+void main()
+{
+    int baseIdx = int(gl_GlobalInvocationID.x) * 14;
+    uint baseIdxWeightsBuf  = drawParameters.weightsOffset + int(gl_GlobalInvocationID.x) * 8;
+    uint baseIdxSrcBuf = drawParameters.srcOffset + baseIdx;
+    uint baseIdxDstBuf = drawParameters.dstOffset + baseIdx;
+    if (baseIdx >= drawParameters.srcSize) {
+        return;
+    }
+
+    vec4 weights = vec4(weightsVector.data[baseIdxWeightsBuf], weightsVector.data[baseIdxWeightsBuf + 1], weightsVector.data[baseIdxWeightsBuf + 2], weightsVector.data[baseIdxWeightsBuf + 3]);
+    ivec4 bonesIndices = ivec4(weightsVector.data[baseIdxWeightsBuf + 4], weightsVector.data[baseIdxWeightsBuf + 5], weightsVector.data[baseIdxWeightsBuf + 6], weightsVector.data[baseIdxWeightsBuf + 7]);
+
+    vec4 position = vec4(srcVector.data[baseIdxSrcBuf], srcVector.data[baseIdxSrcBuf + 1], srcVector.data[baseIdxSrcBuf + 2], 1);
+    position =
+    weights.x * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.x] * position +
+    weights.y * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.y] * position +
+    weights.z * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.z] * position +
+    weights.w * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.w] * position;
+    dstVector.data[baseIdxDstBuf] = position.x / position.w;
+    dstVector.data[baseIdxDstBuf + 1] = position.y / position.w;
+    dstVector.data[baseIdxDstBuf + 2] = position.z / position.w;
+
+    baseIdxSrcBuf += 3;
+    baseIdxDstBuf += 3;
+    vec4 normal = vec4(srcVector.data[baseIdxSrcBuf], srcVector.data[baseIdxSrcBuf + 1], srcVector.data[baseIdxSrcBuf + 2], 0);
+    normal =
+    weights.x * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.x] * normal +
+    weights.y * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.y] * normal +
+    weights.z * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.z] * normal +
+    weights.w * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.w] * normal;
+    dstVector.data[baseIdxDstBuf] = normal.x;
+    dstVector.data[baseIdxDstBuf + 1] = normal.y;
+    dstVector.data[baseIdxDstBuf + 2] = normal.z;
+
+    baseIdxSrcBuf += 3;
+    baseIdxDstBuf += 3;
+    vec4 tangent = vec4(srcVector.data[baseIdxSrcBuf], srcVector.data[baseIdxSrcBuf + 1], srcVector.data[baseIdxSrcBuf + 2], 0);
+    tangent =
+    weights.x * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.x] * tangent +
+    weights.y * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.y] * tangent +
+    weights.z * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.z] * tangent +
+    weights.w * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.w] * tangent;
+    dstVector.data[baseIdxDstBuf] = tangent.x;
+    dstVector.data[baseIdxDstBuf + 1] = tangent.y;
+    dstVector.data[baseIdxDstBuf + 2] = tangent.z;
+
+    baseIdxSrcBuf += 3;
+    baseIdxDstBuf += 3;
+    vec4 bitangent = vec4(srcVector.data[baseIdxSrcBuf], srcVector.data[baseIdxSrcBuf + 1], srcVector.data[baseIdxSrcBuf + 2], 0);
+    bitangent =
+    weights.x * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.x] * bitangent +
+    weights.y * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.y] * bitangent +
+    weights.z * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.z] * bitangent +
+    weights.w * bonesMatrices.data[drawParameters.bonesMatricesOffset + bonesIndices.w] * bitangent;
+    dstVector.data[baseIdxDstBuf] = bitangent.x;
+    dstVector.data[baseIdxDstBuf + 1] = bitangent.y;
+    dstVector.data[baseIdxDstBuf + 2] = bitangent.z;
+
+    baseIdxSrcBuf += 3;
+    baseIdxDstBuf += 3;
+    vec2 textCoords = vec2(srcVector.data[baseIdxSrcBuf], srcVector.data[baseIdxSrcBuf + 1]);
+    dstVector.data[baseIdxDstBuf] = textCoords.x;
+    dstVector.data[baseIdxDstBuf + 1] = textCoords.y;
+}
