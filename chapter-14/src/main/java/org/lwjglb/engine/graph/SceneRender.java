@@ -1,7 +1,6 @@
 package org.lwjglb.engine.graph;
 
 import org.joml.*;
-import org.lwjglb.engine.Window;
 import org.lwjglb.engine.scene.*;
 import org.lwjglb.engine.scene.lights.*;
 
@@ -129,6 +128,7 @@ public class SceneRender {
         glBindVertexArray(0);
 
         shaderProgram.unbind();
+        glDisable(GL_BLEND);
     }
 
     private void updateLights(Scene scene) {
