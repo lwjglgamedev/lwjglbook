@@ -128,7 +128,6 @@ public class SceneRender {
         glBindVertexArray(0);
 
         shaderProgram.unbind();
-        glDisable(GL_BLEND);
     }
 
     private void updateLights(Scene scene) {
