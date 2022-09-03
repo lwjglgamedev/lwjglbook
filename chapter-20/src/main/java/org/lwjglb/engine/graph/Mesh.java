@@ -116,6 +116,14 @@ public class Mesh {
         glDeleteVertexArrays(vaoId);
     }
 
+    public Vector3f getAabbMax() {
+        return aabbMax;
+    }
+
+    public Vector3f getAabbMin() {
+        return aabbMin;
+    }
+
     public int getNumVertices() {
         return numVertices;
     }
