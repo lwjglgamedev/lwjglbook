@@ -6,9 +6,7 @@ import org.lwjglb.engine.scene.*;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL40.GL_DRAW_INDIRECT_BUFFER;
-import static org.lwjgl.opengl.GL43.glMultiDrawElementsIndirect;
+import static org.lwjgl.opengl.GL43.*;
 
 public class ShadowRender {
 

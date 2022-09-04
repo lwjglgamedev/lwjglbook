@@ -4,9 +4,6 @@ import org.lwjgl.opengl.GL;
 import org.lwjglb.engine.Window;
 import org.lwjglb.engine.scene.Scene;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
-import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Render {
