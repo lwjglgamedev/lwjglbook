@@ -111,7 +111,7 @@ public class SceneRender {
         setupMaterialsUniform(scene.getTextureCache(), scene.getMaterialCache());
     }
 
-    public void setupMaterialsUniform(TextureCache textureCache, MaterialCache materialCache) {
+    private void setupMaterialsUniform(TextureCache textureCache, MaterialCache materialCache) {
         List<Texture> textures = textureCache.getAll().stream().toList();
         int numTextures = textures.size();
         if (numTextures > MAX_TEXTURES) {

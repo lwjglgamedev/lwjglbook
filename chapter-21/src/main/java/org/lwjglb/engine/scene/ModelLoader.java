@@ -194,9 +194,9 @@ public class ModelLoader {
             animations.add(animation);
 
             for (int j = 0; j < maxFrames; j++) {
-                Matrix4f[] bonesMatrices = new Matrix4f[MAX_BONES];
-                Arrays.fill(bonesMatrices, IDENTITY_MATRIX);
-                Model.AnimatedFrame animatedFrame = new Model.AnimatedFrame(bonesMatrices);
+                Matrix4f[] boneMatrices = new Matrix4f[MAX_BONES];
+                Arrays.fill(boneMatrices, IDENTITY_MATRIX);
+                Model.AnimatedFrame animatedFrame = new Model.AnimatedFrame(boneMatrices);
                 buildFrameMatrices(aiAnimation, boneList, animatedFrame, j, rootNode,
                         rootNode.getNodeTransformation(), globalInverseTransformation);
                 frames.add(animatedFrame);

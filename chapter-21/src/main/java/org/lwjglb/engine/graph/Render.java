@@ -83,7 +83,8 @@ public class Render {
     public void setupData(Scene scene) {
         renderBuffers.loadStaticModels(scene);
         renderBuffers.loadAnimatedModels(scene);
-        sceneRender.setupMaterialsUniform(scene.getTextureCache(), scene.getMaterialCache());
+        sceneRender.setupData(scene);
+        shadowRender.setupData(scene);
         List<Model> modelList = new ArrayList<>(scene.getModelMap().values());
         modelList.forEach(m -> m.getMeshDataList().clear());
     }

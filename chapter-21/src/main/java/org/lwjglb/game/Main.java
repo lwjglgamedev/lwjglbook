@@ -70,10 +70,12 @@ public class Main implements IAppLogic {
         scene.addModel(cubeModel);
         cubeEntity1 = new Entity("cube-entity-1", cubeModel.getId());
         cubeEntity1.setPosition(0, 2, -1);
+        cubeEntity1.updateModelMatrix();
         scene.addEntity(cubeEntity1);
 
         cubeEntity2 = new Entity("cube-entity-2", cubeModel.getId());
         cubeEntity2.setPosition(-2, 2, -1);
+        cubeEntity2.updateModelMatrix();
         scene.addEntity(cubeEntity2);
 
         render.setupData(scene);
