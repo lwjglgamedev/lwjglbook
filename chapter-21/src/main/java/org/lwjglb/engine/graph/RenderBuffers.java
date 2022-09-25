@@ -81,7 +81,7 @@ public class RenderBuffers {
     public void loadAnimatedModels(Scene scene) {
         List<Model> modelList = scene.getModelMap().values().stream().filter(Model::isAnimated).toList();
         loadBindingPoses(modelList);
-        loadAnimationData(modelList);
+        loadBonesMatricesBuffer(modelList);
         loadBonesIndicesWeights(modelList);
 
         animVaoId = glGenVertexArrays();
@@ -123,7 +123,6 @@ public class RenderBuffers {
         destAnimationBuffer = glGenBuffers();
         vboIdList.add(destAnimationBuffer);
         FloatBuffer meshesBuffer = MemoryUtil.memAllocFloat(positionsSize + normalsSize * 3 + textureCoordsSize);
-
         for (Model model : modelList) {
             model.getEntitiesList().forEach(e -> {
                 for (MeshData meshData : model.getMeshDataList()) {
@@ -156,45 +155,6 @@ public class RenderBuffers {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
-    }
-
-    private void loadAnimationData(List<Model> modelList) {
-        int bufferSize = 0;
-        for (Model model : modelList) {
-            List<Model.Animation> animationsList = model.getAnimationList();
-            for (Model.Animation animation : animationsList) {
-                List<Model.AnimatedFrame> frameList = animation.frames();
-                for (Model.AnimatedFrame frame : frameList) {
-                    Matrix4f[] matrices = frame.getBonesMatrices();
-                    bufferSize += matrices.length * 64;
-                }
-            }
-        }
-
-        bonesMatricesBuffer = glGenBuffers();
-        vboIdList.add(bonesMatricesBuffer);
-        ByteBuffer dataBuffer = MemoryUtil.memAlloc(bufferSize);
-        int matrixSize = 4 * 4 * 4;
-        for (Model model : modelList) {
-            List<Model.Animation> animationsList = model.getAnimationList();
-            for (Model.Animation animation : animationsList) {
-                List<Model.AnimatedFrame> frameList = animation.frames();
-                for (Model.AnimatedFrame frame : frameList) {
-                    frame.setOffset(dataBuffer.position() / matrixSize);
-                    Matrix4f[] matrices = frame.getBonesMatrices();
-                    for (Matrix4f matrix : matrices) {
-                        matrix.get(dataBuffer);
-                        dataBuffer.position(dataBuffer.position() + matrixSize);
-                    }
-                    frame.clearData();
-                }
-            }
-        }
-        dataBuffer.flip();
-
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, bonesMatricesBuffer);
-        glBufferData(GL_SHADER_STORAGE_BUFFER, dataBuffer, GL_STATIC_DRAW);
-        MemoryUtil.memFree(dataBuffer);
     }
 
     private void loadBindingPoses(List<Model> modelList) {
@@ -257,6 +217,45 @@ public class RenderBuffers {
         MemoryUtil.memFree(dataBuffer);
 
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    }
+
+    private void loadBonesMatricesBuffer(List<Model> modelList) {
+        int bufferSize = 0;
+        for (Model model : modelList) {
+            List<Model.Animation> animationsList = model.getAnimationList();
+            for (Model.Animation animation : animationsList) {
+                List<Model.AnimatedFrame> frameList = animation.frames();
+                for (Model.AnimatedFrame frame : frameList) {
+                    Matrix4f[] matrices = frame.getBonesMatrices();
+                    bufferSize += matrices.length * 64;
+                }
+            }
+        }
+
+        bonesMatricesBuffer = glGenBuffers();
+        vboIdList.add(bonesMatricesBuffer);
+        ByteBuffer dataBuffer = MemoryUtil.memAlloc(bufferSize);
+        int matrixSize = 4 * 4 * 4;
+        for (Model model : modelList) {
+            List<Model.Animation> animationsList = model.getAnimationList();
+            for (Model.Animation animation : animationsList) {
+                List<Model.AnimatedFrame> frameList = animation.frames();
+                for (Model.AnimatedFrame frame : frameList) {
+                    frame.setOffset(dataBuffer.position() / matrixSize);
+                    Matrix4f[] matrices = frame.getBonesMatrices();
+                    for (Matrix4f matrix : matrices) {
+                        matrix.get(dataBuffer);
+                        dataBuffer.position(dataBuffer.position() + matrixSize);
+                    }
+                    frame.clearData();
+                }
+            }
+        }
+        dataBuffer.flip();
+
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, bonesMatricesBuffer);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, dataBuffer, GL_STATIC_DRAW);
+        MemoryUtil.memFree(dataBuffer);
     }
 
     public void loadStaticModels(Scene scene) {
