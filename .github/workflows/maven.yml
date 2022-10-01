@@ -2,9 +2,6 @@ name: Java CI
 
 on: [push]
 
-defaults:
-  run:
-    
 jobs:
   build:
     runs-on: ubuntu-latest
