@@ -2,7 +2,6 @@ package org.lwjglb.engine.graph;
 
 import org.lwjgl.opengl.GL30;
 import org.lwjglb.engine.Utils;
-import org.tinylog.Logger;
 
 import java.util.*;
 
@@ -63,17 +62,19 @@ public class ShaderProgram {
             throw new RuntimeException("Error linking Shader code: " + glGetProgramInfoLog(programId, 1024));
         }
 
-        glValidateProgram(programId);
-        if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
-            Logger.warn("Warning validating Shader code: {}", glGetProgramInfoLog(programId, 1024));
-        }
-
         shaderModules.forEach(s -> glDetachShader(programId, s));
         shaderModules.forEach(GL30::glDeleteShader);
     }
 
     public void unbind() {
         glUseProgram(0);
+    }
+
+    public void validate() {
+        glValidateProgram(programId);
+        if (glGetProgrami(programId, GL_VALIDATE_STATUS) == 0) {
+            throw new RuntimeException("Error validating Shader code: " + glGetProgramInfoLog(programId, 1024));
+        }
     }
 
     public record ShaderModuleData(String shaderFile, int shaderType) {
