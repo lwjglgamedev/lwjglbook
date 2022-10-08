@@ -1,6 +1,6 @@
 package org.lwjglb.engine;
 
-import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.*;
 import org.lwjgl.system.MemoryUtil;
 import org.tinylog.Logger;
 
@@ -88,6 +88,10 @@ public class Window {
         glfwFreeCallbacks(windowHandle);
         glfwDestroyWindow(windowHandle);
         glfwTerminate();
+        GLFWErrorCallback callback = glfwSetErrorCallback(null);
+        if (callback != null) {
+            callback.free();
+        }
     }
 
     public int getHeight() {
