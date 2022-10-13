@@ -49,7 +49,7 @@ public class SoundBuffer {
 
             int lengthSamples = stb_vorbis_stream_length_in_samples(decoder);
 
-            ShortBuffer result = MemoryUtil.memAllocShort(lengthSamples);
+            ShortBuffer result = MemoryUtil.memAllocShort(lengthSamples * channels);
 
             result.limit(stb_vorbis_get_samples_short_interleaved(decoder, channels, result) * channels);
             stb_vorbis_close(decoder);
