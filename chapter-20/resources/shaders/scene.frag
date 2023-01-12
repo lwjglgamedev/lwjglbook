@@ -1,4 +1,4 @@
-#version 330
+#version 400
 
 const int MAX_MATERIALS  = 20;
 const int MAX_TEXTURES = 16;
