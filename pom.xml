@@ -123,7 +123,7 @@
         <!-- Versions -->
         <imgui-java.version>1.86.7</imgui-java.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
-        <java.version>18</java.version>
+        <java.version>17</java.version>
         <joml.version>1.10.5</joml.version>
         <joml-primitives.version>1.10.4</joml-primitives.version>
         <lwjgl.version>3.3.1</lwjgl.version>
@@ -131,7 +131,7 @@
         <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.2.0</maven-resources-plugin.version>
-        <tinylog.version>2.5.0</tinylog.version>
+        <tinylog.version>2.6.0</tinylog.version>
     </properties>
 
     <profiles>
