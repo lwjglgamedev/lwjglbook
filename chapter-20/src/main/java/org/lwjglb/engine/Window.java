@@ -115,7 +115,6 @@ public class Window {
 
     public void pollEvents() {
         glfwPollEvents();
-        mouseInput.input();
     }
 
     protected void resized(int width, int height) {
