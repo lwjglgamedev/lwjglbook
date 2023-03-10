@@ -60,9 +60,7 @@ public class Window {
         );
 
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
+            keyCallBack(key, action);
         });
 
         glfwMakeContextCurrent(windowHandle);
@@ -106,8 +104,18 @@ public class Window {
         return width;
     }
 
+    public long getWindowHandle() {
+        return windowHandle;
+    }
+
     public boolean isKeyPressed(int keyCode) {
         return glfwGetKey(windowHandle, keyCode) == GLFW_PRESS;
+    }
+
+    public void keyCallBack(int key, int action) {
+        if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+            glfwSetWindowShouldClose(windowHandle, true); // We will detect this in the rendering loop
+        }
     }
 
     public void pollEvents() {

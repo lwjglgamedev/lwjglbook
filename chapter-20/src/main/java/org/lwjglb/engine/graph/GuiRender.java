@@ -9,6 +9,7 @@ import org.lwjglb.engine.scene.Scene;
 import java.nio.ByteBuffer;
 import java.util.*;
 
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL32.*;
 
 public class GuiRender {
@@ -26,6 +27,7 @@ public class GuiRender {
         shaderProgram = new ShaderProgram(shaderModuleDataList);
         createUniforms();
         createUIResources(window);
+        setupKeyCallBack(window);
     }
 
     public void cleanup() {
@@ -105,5 +107,33 @@ public class GuiRender {
     public void resize(int width, int height) {
         ImGuiIO imGuiIO = ImGui.getIO();
         imGuiIO.setDisplaySize(width, height);
+    }
+
+    private void setupKeyCallBack(Window window) {
+        glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
+                    window.keyCallBack(key, action);
+                    ImGuiIO io = ImGui.getIO();
+                    if (!io.getWantCaptureKeyboard()) {
+                        return;
+                    }
+                    if (action == GLFW_PRESS) {
+                        io.setKeysDown(key, true);
+                    } else if (action == GLFW_RELEASE) {
+                        io.setKeysDown(key, false);
+                    }
+                    io.setKeyCtrl(io.getKeysDown(GLFW_KEY_LEFT_CONTROL) || io.getKeysDown(GLFW_KEY_RIGHT_CONTROL));
+                    io.setKeyShift(io.getKeysDown(GLFW_KEY_LEFT_SHIFT) || io.getKeysDown(GLFW_KEY_RIGHT_SHIFT));
+                    io.setKeyAlt(io.getKeysDown(GLFW_KEY_LEFT_ALT) || io.getKeysDown(GLFW_KEY_RIGHT_ALT));
+                    io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
+                }
+        );
+
+        glfwSetCharCallback(window.getWindowHandle(), (handle, c) -> {
+            ImGuiIO io = ImGui.getIO();
+            if (!io.getWantCaptureKeyboard()) {
+                return;
+            }
+            io.addInputCharacter(c);
+        });
     }
 }
