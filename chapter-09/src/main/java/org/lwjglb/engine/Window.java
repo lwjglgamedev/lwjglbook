@@ -56,7 +56,7 @@ public class Window {
         glfwSetFramebufferSizeCallback(windowHandle, (window, w, h) -> resized(w, h));
 
         glfwSetErrorCallback((int errorCode, long msgPtr) ->
-                Logger.error("Error code [{}], msg [{]]", errorCode, MemoryUtil.memUTF8(msgPtr))
+                Logger.error("Error code [{}], msg [{}]", errorCode, MemoryUtil.memUTF8(msgPtr))
         );
 
         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
