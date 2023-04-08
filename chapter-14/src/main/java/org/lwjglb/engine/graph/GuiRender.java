@@ -1,6 +1,7 @@
 package org.lwjglb.engine.graph;
 
 import imgui.*;
+import imgui.flag.ImGuiKey;
 import imgui.type.ImInt;
 import org.joml.Vector2f;
 import org.lwjglb.engine.*;
@@ -110,9 +111,26 @@ public class GuiRender {
     }
 
     private void setupKeyCallBack(Window window) {
+        ImGuiIO io = ImGui.getIO();
+        io.setKeyMap(ImGuiKey.Tab, GLFW_KEY_TAB);
+        io.setKeyMap(ImGuiKey.LeftArrow, GLFW_KEY_LEFT);
+        io.setKeyMap(ImGuiKey.RightArrow, GLFW_KEY_RIGHT);
+        io.setKeyMap(ImGuiKey.UpArrow, GLFW_KEY_UP);
+        io.setKeyMap(ImGuiKey.DownArrow, GLFW_KEY_DOWN);
+        io.setKeyMap(ImGuiKey.PageUp, GLFW_KEY_PAGE_UP);
+        io.setKeyMap(ImGuiKey.PageDown, GLFW_KEY_PAGE_DOWN);
+        io.setKeyMap(ImGuiKey.Home, GLFW_KEY_HOME);
+        io.setKeyMap(ImGuiKey.End, GLFW_KEY_END);
+        io.setKeyMap(ImGuiKey.Insert, GLFW_KEY_INSERT);
+        io.setKeyMap(ImGuiKey.Delete, GLFW_KEY_DELETE);
+        io.setKeyMap(ImGuiKey.Backspace, GLFW_KEY_BACKSPACE);
+        io.setKeyMap(ImGuiKey.Space, GLFW_KEY_SPACE);
+        io.setKeyMap(ImGuiKey.Enter, GLFW_KEY_ENTER);
+        io.setKeyMap(ImGuiKey.Escape, GLFW_KEY_ESCAPE);
+        io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
+
         glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
                     window.keyCallBack(key, action);
-                    ImGuiIO io = ImGui.getIO();
                     if (!io.getWantCaptureKeyboard()) {
                         return;
                     }
@@ -129,7 +147,6 @@ public class GuiRender {
         );
 
         glfwSetCharCallback(window.getWindowHandle(), (handle, c) -> {
-            ImGuiIO io = ImGui.getIO();
             if (!io.getWantCaptureKeyboard()) {
                 return;
             }
