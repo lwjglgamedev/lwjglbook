@@ -3,15 +3,15 @@ package org.lwjglb.engine.scene;
 import org.joml.Matrix4f;
 import org.lwjglb.engine.graph.Model;
 
+import java.util.Arrays;
+
 public class AnimationData {
 
     public static final Matrix4f[] DEFAULT_BONES_MATRICES = new Matrix4f[ModelLoader.MAX_BONES];
 
     static {
         Matrix4f zeroMatrix = new Matrix4f().zero();
-        for (int i = 0; i < DEFAULT_BONES_MATRICES.length; i++) {
-            DEFAULT_BONES_MATRICES[i] = zeroMatrix;
-        }
+        Arrays.fill(DEFAULT_BONES_MATRICES, zeroMatrix);
     }
 
     private Model.Animation currentAnimation;

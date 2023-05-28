@@ -19,7 +19,7 @@ public class RenderBuffers {
     }
 
     public void cleanup() {
-        vboIdList.stream().forEach(GL30::glDeleteBuffers);
+        vboIdList.forEach(GL30::glDeleteBuffers);
         glDeleteVertexArrays(staticVaoId);
     }
 
