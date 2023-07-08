@@ -28,7 +28,7 @@ public class Scene {
     }
 
     public void cleanup() {
-        modelMap.values().stream().forEach(Model::cleanup);
+        modelMap.values().forEach(Model::cleanup);
     }
 
     public Map<String, Model> getModelMap() {

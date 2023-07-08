@@ -18,7 +18,7 @@ public class Material {
     }
 
     public void cleanup() {
-        meshList.stream().forEach(Mesh::cleanup);
+        meshList.forEach(Mesh::cleanup);
     }
 
     public Vector4f getDiffuseColor() {

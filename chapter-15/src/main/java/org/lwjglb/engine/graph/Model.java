@@ -20,7 +20,7 @@ public class Model {
     }
 
     public void cleanup() {
-        materialList.stream().forEach(Material::cleanup);
+        materialList.forEach(Material::cleanup);
     }
 
     public List<Animation> getAnimationList() {

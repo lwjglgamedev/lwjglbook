@@ -103,8 +103,10 @@ public class SceneRender {
 
         // Static meshes
         int drawElement = 0;
-        List<Model> modelList = scene.getModelMap().values().stream().filter(m -> !m.isAnimated()).toList();
-        for (Model model : modelList) {
+        for (Model model: scene.getModelMap().values()) {
+            if (model.isAnimated()) {
+                continue;
+            }
             List<Entity> entities = model.getEntitiesList();
             for (RenderBuffers.MeshDrawData meshDrawData : model.getMeshDrawDataList()) {
                 for (Entity entity : entities) {
@@ -121,8 +123,10 @@ public class SceneRender {
 
         // Animated meshes
         drawElement = 0;
-        modelList = scene.getModelMap().values().stream().filter(m -> m.isAnimated()).toList();
-        for (Model model : modelList) {
+        for (Model model: scene.getModelMap().values()) {
+            if (!model.isAnimated()) {
+                continue;
+            }
             for (RenderBuffers.MeshDrawData meshDrawData : model.getMeshDrawDataList()) {
                 RenderBuffers.AnimMeshDrawData animMeshDrawData = meshDrawData.animMeshDrawData();
                 Entity entity = animMeshDrawData.entity();

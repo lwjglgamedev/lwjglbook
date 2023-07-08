@@ -17,7 +17,7 @@ public class Model {
     }
 
     public void cleanup() {
-        meshList.stream().forEach(Mesh::cleanup);
+        meshList.forEach(Mesh::cleanup);
     }
 
     public List<Entity> getEntitiesList() {

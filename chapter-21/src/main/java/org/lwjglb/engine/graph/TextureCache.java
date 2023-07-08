@@ -14,7 +14,7 @@ public class TextureCache {
     }
 
     public void cleanup() {
-        textureMap.values().stream().forEach(Texture::cleanup);
+        textureMap.values().forEach(Texture::cleanup);
     }
 
     public Texture createTexture(String texturePath) {

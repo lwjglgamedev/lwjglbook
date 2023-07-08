@@ -17,7 +17,7 @@ public class Scene {
     }
 
     public void cleanup() {
-        meshMap.values().stream().forEach(Mesh::cleanup);
+        meshMap.values().forEach(Mesh::cleanup);
     }
 
     public Map<String, Mesh> getMeshMap() {
