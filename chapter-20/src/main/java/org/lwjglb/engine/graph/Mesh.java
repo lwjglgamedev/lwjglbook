@@ -71,7 +71,7 @@ public class Mesh {
             // Texture coordinates VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer textCoordsBuffer = MemoryUtil.memAllocFloat(meshData.getTextCoords().length);
+            FloatBuffer textCoordsBuffer = stack.callocFloat(meshData.getTextCoords().length);
             textCoordsBuffer.put(0, meshData.getTextCoords());
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
@@ -81,7 +81,7 @@ public class Mesh {
             // Bone weights
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer weightsBuffer = MemoryUtil.memAllocFloat(meshData.getWeights().length);
+            FloatBuffer weightsBuffer = stack.callocFloat(meshData.getWeights().length);
             weightsBuffer.put(meshData.getWeights()).flip();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, weightsBuffer, GL_STATIC_DRAW);
@@ -91,7 +91,7 @@ public class Mesh {
             // Bone indices
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            IntBuffer boneIndicesBuffer = MemoryUtil.memAllocInt(meshData.getBoneIndices().length);
+            IntBuffer boneIndicesBuffer = stack.callocInt(meshData.getBoneIndices().length);
             boneIndicesBuffer.put(meshData.getBoneIndices()).flip();
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, boneIndicesBuffer, GL_STATIC_DRAW);

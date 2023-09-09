@@ -4,6 +4,7 @@ import imgui.*;
 import imgui.flag.ImGuiKey;
 import imgui.type.ImInt;
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjglb.engine.*;
 import org.lwjglb.engine.scene.Scene;
 
@@ -129,7 +130,7 @@ public class GuiRender {
         io.setKeyMap(ImGuiKey.Escape, GLFW_KEY_ESCAPE);
         io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
 
-        glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
+        GLFWKeyCallback a = glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
                     window.keyCallBack(key, action);
                     if (!io.getWantCaptureKeyboard()) {
                         return;
@@ -145,6 +146,7 @@ public class GuiRender {
                     io.setKeySuper(io.getKeysDown(GLFW_KEY_LEFT_SUPER) || io.getKeysDown(GLFW_KEY_RIGHT_SUPER));
                 }
         );
+        a.free();
 
         glfwSetCharCallback(window.getWindowHandle(), (handle, c) -> {
             if (!io.getWantCaptureKeyboard()) {

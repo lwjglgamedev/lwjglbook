@@ -4,6 +4,7 @@ import imgui.*;
 import imgui.flag.ImGuiKey;
 import imgui.type.ImInt;
 import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjglb.engine.*;
 import org.lwjglb.engine.scene.Scene;
 
@@ -16,6 +17,7 @@ import static org.lwjgl.opengl.GL32.*;
 public class GuiRender {
 
     private GuiMesh guiMesh;
+    private GLFWKeyCallback prevKeyCallBack;
     private Vector2f scale;
     private ShaderProgram shaderProgram;
     private Texture texture;
@@ -34,6 +36,9 @@ public class GuiRender {
     public void cleanup() {
         shaderProgram.cleanup();
         texture.cleanup();
+        if (prevKeyCallBack != null) {
+            prevKeyCallBack.free();
+        }
     }
 
     private void createUIResources(Window window) {
@@ -129,9 +134,12 @@ public class GuiRender {
         io.setKeyMap(ImGuiKey.Escape, GLFW_KEY_ESCAPE);
         io.setKeyMap(ImGuiKey.KeyPadEnter, GLFW_KEY_KP_ENTER);
 
-        glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
+        prevKeyCallBack = glfwSetKeyCallback(window.getWindowHandle(), (handle, key, scancode, action, mods) -> {
                     window.keyCallBack(key, action);
                     if (!io.getWantCaptureKeyboard()) {
+                        if (prevKeyCallBack != null) {
+                            prevKeyCallBack.invoke(handle, key, scancode, action, mods);
+                        }
                         return;
                     }
                     if (action == GLFW_PRESS) {

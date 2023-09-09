@@ -1,7 +1,7 @@
 package org.lwjglb.engine.graph;
 
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.*;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.*;
 import java.util.*;
@@ -35,7 +35,7 @@ public class Mesh {
             // Texture coordinates VBO
             vboId = glGenBuffers();
             vboIdList.add(vboId);
-            FloatBuffer textCoordsBuffer = MemoryUtil.memAllocFloat(textCoords.length);
+            FloatBuffer textCoordsBuffer = stack.callocFloat(textCoords.length);
             textCoordsBuffer.put(0, textCoords);
             glBindBuffer(GL_ARRAY_BUFFER, vboId);
             glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
