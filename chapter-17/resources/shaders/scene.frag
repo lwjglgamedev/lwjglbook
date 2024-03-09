@@ -1,4 +1,4 @@
-#version 330
+#version 410
 
 const int DEBUG_SHADOWS = 0;
 const int MAX_POINT_LIGHTS = 5;
