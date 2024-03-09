@@ -74,7 +74,7 @@ public class SceneRender {
         uniformsMap.createUniform("fog.density");
 
         for (int i = 0; i < CascadeShadow.SHADOW_MAP_CASCADE_COUNT; i++) {
-            uniformsMap.createUniform("shadowMap_" + i);
+            uniformsMap.createUniform("shadowMap[" + i + "]");
             uniformsMap.createUniform("cascadeshadows[" + i + "]" + ".projViewMatrix");
             uniformsMap.createUniform("cascadeshadows[" + i + "]" + ".splitDistance");
         }
@@ -103,7 +103,7 @@ public class SceneRender {
         int start = 2;
         List<CascadeShadow> cascadeShadows = shadowRender.getCascadeShadows();
         for (int i = 0; i < CascadeShadow.SHADOW_MAP_CASCADE_COUNT; i++) {
-            uniformsMap.setUniform("shadowMap_" + i, start + i);
+            uniformsMap.setUniform("shadowMap[" + i + "]", start + i);
             CascadeShadow cascadeShadow = cascadeShadows.get(i);
             uniformsMap.setUniform("cascadeshadows[" + i + "]" + ".projViewMatrix", cascadeShadow.getProjViewMatrix());
             uniformsMap.setUniform("cascadeshadows[" + i + "]" + ".splitDistance", cascadeShadow.getSplitDistance());

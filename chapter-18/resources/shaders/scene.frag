@@ -74,9 +74,7 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform DirLight dirLight;
 uniform Fog fog;
 uniform CascadeShadow cascadeshadows[NUM_CASCADES];
-uniform sampler2D shadowMap_0;
-uniform sampler2D shadowMap_1;
-uniform sampler2D shadowMap_2;
+uniform sampler2D shadowMap[NUM_CASCADES];
 uniform int selected;
 
 vec4 calcAmbient(AmbientLight ambientLight, vec4 ambient) {
@@ -157,13 +155,7 @@ float textureProj(vec4 shadowCoord, vec2 offset, int idx) {
 
     if (shadowCoord.z > -1.0 && shadowCoord.z < 1.0) {
         float dist = 0.0;
-        if (idx == 0) {
-            dist = texture(shadowMap_0, vec2(shadowCoord.xy + offset)).r;
-        } else if (idx == 1) {
-            dist = texture(shadowMap_1, vec2(shadowCoord.xy + offset)).r;
-        } else {
-            dist = texture(shadowMap_2, vec2(shadowCoord.xy + offset)).r;
-        }
+        dist = texture(shadowMap[idx], vec2(shadowCoord.xy + offset)).r;
         if (shadowCoord.w > 0 && dist < shadowCoord.z - BIAS) {
             shadow = SHADOW_FACTOR;
         }
