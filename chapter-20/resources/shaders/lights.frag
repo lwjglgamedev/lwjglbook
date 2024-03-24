@@ -182,11 +182,10 @@ void main()
 
     vec4 diffuseSpecularComp = calcDirLight(diffuse, specular, reflectance, dirLight, view_pos, normal);
 
-    int cascadeIndex;
+    int cascadeIndex = 0;
     for (int i=0; i<NUM_CASCADES - 1; i++) {
         if (view_pos.z < cascadeshadows[i].splitDistance) {
             cascadeIndex = i + 1;
-            break;
         }
     }
     float shadowFactor = calcShadow(world_pos, cascadeIndex);
