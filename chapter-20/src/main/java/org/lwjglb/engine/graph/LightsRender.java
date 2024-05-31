@@ -205,7 +205,7 @@ public class LightsRender {
         }
 
         uniformsMap.setUniform(prefix + ".conedir", coneDirection);
-        uniformsMap.setUniform(prefix + ".conedir", cutoff);
+        uniformsMap.setUniform(prefix + ".cutoff", cutoff);
         updatePointLight(pointLight, prefix + ".pl", viewMatrix);
     }
 }
