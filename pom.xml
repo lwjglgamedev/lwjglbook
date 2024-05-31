@@ -127,9 +127,9 @@
         <joml.version>1.10.5</joml.version>
         <joml-primitives.version>1.10.4</joml-primitives.version>
         <lwjgl.version>3.3.3</lwjgl.version>
-        <maven-compiler-plugin.version>3.12.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <tinylog.version>2.7.0</tinylog.version>
     </properties>
