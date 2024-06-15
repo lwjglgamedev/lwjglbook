@@ -45,7 +45,7 @@ void main()
             initTangent += weight * tmpTangent;
 
             vec4 tmpBitangent = bonesMatrices[boneIndex] * vec4(bitangent, 0.0);
-            initTangent += weight * tmpBitangent;
+            initBitangent += weight * tmpBitangent;
         }
     }
     if (count == 0) {
