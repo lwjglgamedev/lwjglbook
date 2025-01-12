@@ -26,96 +26,103 @@ public class Mesh {
 
     public Mesh(float[] positions, float[] normals, float[] tangents, float[] bitangents, float[] textCoords, int[] indices,
                 int[] boneIndices, float[] weights, Vector3f aabbMin, Vector3f aabbMax) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            this.aabbMin = aabbMin;
-            this.aabbMax = aabbMax;
-            numVertices = indices.length;
-            vboIdList = new ArrayList<>();
+        this.aabbMin = aabbMin;
+        this.aabbMax = aabbMax;
+        numVertices = indices.length;
+        vboIdList = new ArrayList<>();
 
-            vaoId = glGenVertexArrays();
-            glBindVertexArray(vaoId);
+        vaoId = glGenVertexArrays();
+        glBindVertexArray(vaoId);
 
-            // Positions VBO
-            int vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer positionsBuffer = stack.callocFloat(positions.length);
-            positionsBuffer.put(0, positions);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        // Positions VBO
+        int vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer positionsBuffer = MemoryUtil.memCallocFloat(positions.length);
+        positionsBuffer.put(0, positions);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-            // Normals VBO
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer normalsBuffer = stack.callocFloat(normals.length);
-            normalsBuffer.put(0, normals);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
+        // Normals VBO
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer normalsBuffer = MemoryUtil.memCallocFloat(normals.length);
+        normalsBuffer.put(0, normals);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
-            // Tangents VBO
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer tangentsBuffer = stack.callocFloat(tangents.length);
-            tangentsBuffer.put(0, tangents);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, tangentsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(2);
-            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
+        // Tangents VBO
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer tangentsBuffer = MemoryUtil.memCallocFloat(tangents.length);
+        tangentsBuffer.put(0, tangents);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, tangentsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
 
-            // Bitangents VBO
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer bitangentsBuffer = stack.callocFloat(bitangents.length);
-            bitangentsBuffer.put(0, bitangents);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, bitangentsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(3);
-            glVertexAttribPointer(3, 3, GL_FLOAT, false, 0, 0);
+        // Bitangents VBO
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer bitangentsBuffer = MemoryUtil.memCallocFloat(bitangents.length);
+        bitangentsBuffer.put(0, bitangents);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, bitangentsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, false, 0, 0);
 
-            // Texture coordinates VBO
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer textCoordsBuffer = stack.callocFloat(textCoords.length);
-            textCoordsBuffer.put(0, textCoords);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(4);
-            glVertexAttribPointer(4, 2, GL_FLOAT, false, 0, 0);
+        // Texture coordinates VBO
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer textCoordsBuffer = MemoryUtil.memCallocFloat(textCoords.length);
+        textCoordsBuffer.put(0, textCoords);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 2, GL_FLOAT, false, 0, 0);
 
-            // Bone weights
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer weightsBuffer = stack.callocFloat(weights.length);
-            weightsBuffer.put(weights).flip();
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, weightsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(5);
-            glVertexAttribPointer(5, 4, GL_FLOAT, false, 0, 0);
+        // Bone weights
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer weightsBuffer = MemoryUtil.memCallocFloat(weights.length);
+        weightsBuffer.put(weights).flip();
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, weightsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, false, 0, 0);
 
-            // Bone indices
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            IntBuffer boneIndicesBuffer = stack.callocInt(boneIndices.length);
-            boneIndicesBuffer.put(boneIndices).flip();
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, boneIndicesBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(6);
-            glVertexAttribPointer(6, 4, GL_FLOAT, false, 0, 0);
+        // Bone indices
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        IntBuffer boneIndicesBuffer = MemoryUtil.memCallocInt(boneIndices.length);
+        boneIndicesBuffer.put(boneIndices).flip();
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, boneIndicesBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, false, 0, 0);
 
-            // Index VBO
-            vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            IntBuffer indicesBuffer = stack.callocInt(indices.length);
-            indicesBuffer.put(0, indices);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
+        // Index VBO
+        vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        IntBuffer indicesBuffer = MemoryUtil.memCallocInt(indices.length);
+        indicesBuffer.put(0, indices);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-        }
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+
+        MemoryUtil.memFree(positionsBuffer);
+        MemoryUtil.memFree(normalsBuffer);
+        MemoryUtil.memFree(tangentsBuffer);
+        MemoryUtil.memFree(bitangentsBuffer);
+        MemoryUtil.memFree(textCoordsBuffer);
+        MemoryUtil.memFree(weightsBuffer);
+        MemoryUtil.memFree(boneIndicesBuffer);
+        MemoryUtil.memFree(indicesBuffer);
     }
 
     public void cleanup() {

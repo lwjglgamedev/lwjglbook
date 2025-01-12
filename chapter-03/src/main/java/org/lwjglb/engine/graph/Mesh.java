@@ -1,7 +1,7 @@
 package org.lwjglb.engine.graph;
 
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.*;
 
 import java.nio.FloatBuffer;
 import java.util.*;
@@ -15,26 +15,26 @@ public class Mesh {
     private List<Integer> vboIdList;
 
     public Mesh(float[] positions, int numVertices) {
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            this.numVertices = numVertices;
-            vboIdList = new ArrayList<>();
+        this.numVertices = numVertices;
+        vboIdList = new ArrayList<>();
 
-            vaoId = glGenVertexArrays();
-            glBindVertexArray(vaoId);
+        vaoId = glGenVertexArrays();
+        glBindVertexArray(vaoId);
 
-            // Positions VBO
-            int vboId = glGenBuffers();
-            vboIdList.add(vboId);
-            FloatBuffer positionsBuffer = stack.callocFloat(positions.length);
-            positionsBuffer.put(0, positions);
-            glBindBuffer(GL_ARRAY_BUFFER, vboId);
-            glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        // Positions VBO
+        int vboId = glGenBuffers();
+        vboIdList.add(vboId);
+        FloatBuffer positionsBuffer = MemoryUtil.memCallocFloat(positions.length);
+        positionsBuffer.put(0, positions);
+        glBindBuffer(GL_ARRAY_BUFFER, vboId);
+        glBufferData(GL_ARRAY_BUFFER, positionsBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindVertexArray(0);
-        }
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+
+        MemoryUtil.memFree(positionsBuffer);
     }
 
     public void cleanup() {
