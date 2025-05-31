@@ -25,7 +25,7 @@ public class LightControls implements IGuiInstance {
     private float[] pointLightY;
     private float[] pointLightZ;
     private float[] spotLightColor;
-    private float[] spotLightCuttoff;
+    private float[] spotLightCutoff;
     private float[] spotLightIntensity;
     private float[] spotLightX;
     private float[] spotLightY;
@@ -57,7 +57,7 @@ public class LightControls implements IGuiInstance {
         spotLightY = new float[]{pos.y};
         spotLightZ = new float[]{pos.z};
         spotLightIntensity = new float[]{pointLight.getIntensity()};
-        spotLightCuttoff = new float[]{spotLight.getCutOffAngle()};
+        spotLightCutoff = new float[]{spotLight.getCutOffAngle()};
         Vector3f coneDir = spotLight.getConeDirection();
         dirConeX = new float[]{coneDir.x};
         dirConeY = new float[]{coneDir.y};
@@ -100,7 +100,7 @@ public class LightControls implements IGuiInstance {
             ImGui.colorEdit3("Spot Light color", spotLightColor);
             ImGui.sliderFloat("Spot Light Intensity", spotLightIntensity, 0.0f, 1.0f, "%.2f");
             ImGui.separator();
-            ImGui.sliderFloat("Spot Light cutoff", spotLightCuttoff, 0.0f, 360.0f, "%2.f");
+            ImGui.sliderFloat("Spot Light cutoff", spotLightCutoff, 0.0f, 360.0f, "%2.f");
             ImGui.sliderFloat("Dir cone - x", dirConeX, -1.0f, 1.0f, "%.2f");
             ImGui.sliderFloat("Dir cone - y", dirConeY, -1.0f, 1.0f, "%.2f");
             ImGui.sliderFloat("Dir cone - z", dirConeZ, -1.0f, 1.0f, "%.2f");
@@ -145,7 +145,7 @@ public class LightControls implements IGuiInstance {
             pointLight.setPosition(spotLightX[0], spotLightY[0], spotLightZ[0]);
             pointLight.setColor(spotLightColor[0], spotLightColor[1], spotLightColor[2]);
             pointLight.setIntensity(spotLightIntensity[0]);
-            spotLight.setCutOffAngle(spotLightColor[0]);
+            spotLight.setCutOffAngle(spotLightCutoff[0]);
             spotLight.setConeDirection(dirConeX[0], dirConeY[0], dirConeZ[0]);
 
             DirLight dirLight = sceneLights.getDirLight();
