@@ -54,6 +54,7 @@ public class Main implements IAppLogic {
 
         SkyBox skyBox = new SkyBox("resources/models/skybox/skybox.obj", scene.getTextureCache());
         skyBox.getSkyBoxEntity().setScale(50);
+        skyBox.getSkyBoxEntity().updateModelMatrix();
         scene.setSkyBox(skyBox);
 
         scene.getCamera().moveUp(0.1f);
